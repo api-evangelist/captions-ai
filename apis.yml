@@ -1,0 +1,130 @@
+aid: captions-ai
+name: Captions
+description: >
+  Captions is an AI-powered video creation and editing platform developed by Mirage, a New
+  York-based AI research and product company. The platform enables creators and businesses to
+  generate, edit, caption, dub, and translate talking-head videos at scale using generative AI.
+  The Captions API — served under the Mirage API umbrella — exposes capabilities for automated
+  video captioning, AI Creator video generation (using community avatars or personal AI Twins),
+  AI Ads video generation, and bulk video management, all authenticated via API key and billed on
+  a per-second-of-video credit model. Captions supports output in 30+ languages with automatic
+  language detection, lip-sync dubbing, and direct publishing integrations for TikTok, Instagram,
+  and YouTube.
+type: Index
+image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+tags:
+  - AI Video
+  - Video Generation
+  - Video Captioning
+  - AI Dubbing
+  - Lip Sync
+  - AI Twin
+  - Text to Video
+  - Generative AI
+  - Video Translation
+url: https://raw.githubusercontent.com/api-evangelist/captions-ai/refs/heads/main/apis.yml
+created: '2026-06-12'
+modified: '2026-06-12'
+specificationVersion: '0.19'
+
+apis:
+  - aid: captions-ai-video-captions-api
+    name: Captions Video Captions API
+    description: >
+      REST API for adding AI-generated captions to uploaded videos or existing video IDs.
+      Accepts MP4/MOV files up to 50MB, applies a caption template, and returns a processed
+      video job. Results are polled via video ID until the status reaches COMPLETE. Billing is
+      $0.15 per minute of input video, rounded up to the nearest minute.
+    humanURL: https://captions.ai/help/docs/api/video-captions
+    baseURL: https://api.mirage.app
+    tags:
+      - Video Captioning
+      - Captions
+      - Subtitles
+    properties:
+      - type: Documentation
+        url: https://captions.ai/help/docs/api/video-captions
+      - type: OpenAPI
+        url: https://captions.ai/help/api-reference/video-captions/add-captions-to-a-video
+
+  - aid: captions-ai-creator-api
+    name: Captions AI Creator API
+    description: >
+      API for generating AI talking-head videos up to 1 minute using community avatars or
+      user-created AI Twin digital clones. Scripts are limited to 800 characters and support
+      30+ languages with automatic detection. Usage is billed at 1 credit per second of
+      generated video. Exposes /list, /submit, and /poll endpoints.
+    humanURL: https://captions.ai/help/api-reference/ai-creator
+    baseURL: https://api.mirage.app
+    tags:
+      - AI Video Generation
+      - AI Twin
+      - Talking Head Video
+      - Text to Video
+    properties:
+      - type: Documentation
+        url: https://captions.ai/help/api-reference/ai-creator
+
+  - aid: captions-ai-ads-api
+    name: Captions AI Ads API
+    description: >
+      API for generating UGC-style AI advertising videos using AI creators. Accepts a script
+      (up to 800 characters), a creator name, and optional media assets (JPEG, PNG, MOV, MP4).
+      Usage is billed at 1 credit per second of generated video. Exposes /list-creators,
+      /submit, and /poll endpoints for asynchronous job management.
+    humanURL: https://captions.ai/help/api-reference/ai-ads
+    baseURL: https://api.mirage.app
+    tags:
+      - AI Advertising
+      - UGC Video
+      - Video Generation
+      - AI Actors
+    properties:
+      - type: Documentation
+        url: https://captions.ai/help/api-reference/ai-ads
+
+  - aid: captions-mirage-video-api
+    name: Mirage Video Generation API
+    description: >
+      Beta API for production-grade talking-head video generation from script, image reference,
+      or actor ID inputs. Returns high-fidelity video with natural eye contact, gestures, and
+      emotional expression. Supports create, retrieve, retrieve content, and list video
+      operations. Currently in limited early-access beta.
+    humanURL: https://captions.ai/help/api-reference/api
+    baseURL: https://api.mirage.app
+    tags:
+      - Video Generation
+      - AI Avatars
+      - Talking Head
+      - Generative AI
+    properties:
+      - type: Documentation
+        url: https://captions.ai/help/api-reference/api
+
+common:
+  - type: Website
+    url: https://captions.ai/
+  - type: Documentation
+    url: https://captions.ai/help/docs/api/overview
+  - type: GitHubOrganization
+    url: https://github.com/mirage-ai-com
+  - type: LinkedIn
+    url: https://www.linkedin.com/company/captionsapp
+  - type: X
+    url: https://x.com/getcaptionsapp
+  - type: Blog
+    url: https://captions.ai/blog
+  - type: Pricing
+    url: https://captions.ai/pricing
+  - type: Changelog
+    url: https://captions.ai/help/whats-new
+  - type: Plans
+    url: plans/captions-ai-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/captions-ai-rate-limits.yml
+  - type: FinOps
+    url: finops/captions-ai-finops.yml
+
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com
