@@ -124,7 +124,7 @@ common:
     url: https://captions.ai/blog
   - type: Pricing
     url: https://captions.ai/pricing
-  - type: Changelog
+  - type: ChangeLog
     url: https://captions.ai/help/whats-new
   - type: Plans
     url: plans/captions-ai-plans-pricing.yml
