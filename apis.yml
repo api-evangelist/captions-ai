@@ -110,6 +110,10 @@ apis:
         url: openapi/captions-ai-mirage-video-openapi.yml
 
 common:
+  - type: DomainSecurity
+    url: security/captions-ai-domain-security.yml
+  - type: Authentication
+    url: authentication/captions-ai-authentication.yml
   - type: Website
     url: https://captions.ai/
   - type: Documentation
