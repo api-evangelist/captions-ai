@@ -2,18 +2,13 @@
   "repo": "captions-ai",
   "feeds": [
     {
-      "source": "https://captions.ai/blog",
-      "feed_url": "",
-      "saved": 1,
-      "method": "agent-scrape"
-    },
-    {
       "source": "https://x.com/getcaptionsapp",
+      "feed_url": "https://x.com/getcaptionsapp",
+      "title": "",
       "saved": 0,
-      "error": "x.com not scrapable (no public feed)"
+      "method": "none"
     }
   ],
-  "post_count": 4,
-  "fetched": "2026-06-27T12:30:46Z",
-  "agent_pulled": "2026-06-27"
+  "post_count": 8,
+  "fetched": "2026-07-11T11:50:51Z"
 }
