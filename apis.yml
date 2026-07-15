@@ -110,6 +110,8 @@ apis:
         url: openapi/captions-ai-mirage-video-openapi.yml
 
 common:
+  - type: AgenticAccess
+    url: agentic-access/captions-ai-agentic-access.yml
   - type: DomainSecurity
     url: security/captions-ai-domain-security.yml
   - type: Authentication
