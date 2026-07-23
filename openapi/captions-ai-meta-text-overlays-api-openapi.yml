@@ -1,0 +1,247 @@
+openapi: 3.0.3
+info:
+  title: Captions AI Creator & AI Ads Meta Text Overlays API
+  description: 'REST API for generating AI talking-head videos using community avatars (AI Creator) and UGC-style AI advertising videos (AI Ads). Both APIs are asynchronous: submit a job, then poll for completion. Scripts are limited to 800 characters, supporting 30+ languages with automatic detection. Usage is billed at 1 credit per second of generated video. Rate limit is 5 requests per minute per endpoint.
+
+    '
+  version: '1.0'
+  contact:
+    name: Captions API Support
+    url: https://captions.ai/help/docs/api/overview
+servers:
+- url: https://api.captions.ai/api
+  description: Captions API production server
+security:
+- ApiKeyAuth: []
+tags:
+- name: Meta Text Overlays
+  description: Render static text overlays onto videos
+paths:
+  /v1/meta/text_overlays:
+    post:
+      tags:
+      - Meta Text Overlays
+      summary: Create Meta Text Overlay
+      description: 'Render static text overlays onto an uploaded video. Upload once and render up to 4 related text variants against the same input video.
+
+        '
+      operationId: createMetaTextOverlay
+      parameters:
+      - $ref: '#/components/parameters/XApiKey'
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CreateMetaTextOverlayRequest'
+      responses:
+        '200':
+          description: Returns a MetaTextOverlay job object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetaTextOverlay'
+              example:
+                id: d7f76ec6-2500-4d23-a2bc-648f4e904555
+                object: text_overlay
+                status: QUEUED
+                created_at: 1730822400
+                results: []
+        '422':
+          $ref: '#/components/responses/ValidationError'
+  /v1/meta/text_overlays/{text_overlay_id}:
+    get:
+      tags:
+      - Meta Text Overlays
+      summary: Retrieve Meta Text Overlay
+      operationId: getMetaTextOverlay
+      parameters:
+      - $ref: '#/components/parameters/XApiKey'
+      - name: text_overlay_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Returns the MetaTextOverlay job object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetaTextOverlay'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+components:
+  schemas:
+    MetaTextOverlayResult:
+      type: object
+      required:
+      - index
+      - text
+      - status
+      description: Per-text result for a Meta text overlay job.
+      properties:
+        index:
+          type: integer
+          description: Zero-based index matching the input texts order
+        text:
+          type: string
+          description: Input text for this rendered output
+        status:
+          type: string
+          enum:
+          - COMPLETE
+          - FAILED
+          description: Terminal status for this item
+        video_url:
+          type: string
+          nullable: true
+          description: Resolved output video URL when this item completed successfully
+        error:
+          nullable: true
+          allOf:
+          - $ref: '#/components/schemas/MAVideoError'
+          description: Error details when this item failed
+    ValidationError:
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      properties:
+        loc:
+          type: array
+          items:
+            oneOf:
+            - type: string
+            - type: integer
+        msg:
+          type: string
+        type:
+          type: string
+    MetaTextOverlay:
+      type: object
+      required:
+      - id
+      - status
+      - created_at
+      description: Represents a Meta text overlay job.
+      properties:
+        id:
+          type: string
+          description: Text overlay job ID
+        object:
+          type: string
+          enum:
+          - text_overlay
+          default: text_overlay
+        status:
+          type: string
+          enum:
+          - QUEUED
+          - PROCESSING
+          - COMPLETE
+          - FAILED
+          - CANCELLED
+          description: Current state of the text overlay job
+        created_at:
+          type: integer
+          description: When the job was created (unix timestamp)
+        completed_at:
+          type: integer
+          nullable: true
+          description: When processing reached a terminal state (unix timestamp)
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/MetaTextOverlayResult'
+          description: Ordered per-text render results for this job
+        error:
+          nullable: true
+          allOf:
+          - $ref: '#/components/schemas/MAVideoError'
+          description: Error details if the job failed before itemized completion
+    HTTPValidationError:
+      type: object
+      properties:
+        detail:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationError'
+    CreateMetaTextOverlayRequest:
+      type: object
+      required:
+      - video
+      description: 'Request body for creating a Meta text overlay job. Upload once and render up to 4 related text variants.
+
+        '
+      properties:
+        video:
+          type: string
+          format: binary
+          description: Source video file (MP4 or MOV).
+        texts:
+          type: array
+          nullable: true
+          items:
+            type: string
+          description: Ordered text variants to render as static overlays (max 4).
+        items:
+          type: string
+          nullable: true
+          description: 'Optional JSON array of item objects. Each item must contain text and may contain style.font, style.size, and style.color.
+
+            '
+        fonts:
+          type: array
+          nullable: true
+          items:
+            type: string
+          description: Optional ordered font overrides aligned by index with texts.
+        sizes:
+          type: array
+          nullable: true
+          items:
+            type: string
+          description: Optional ordered font size overrides in pixels aligned by index with texts.
+        colors:
+          type: array
+          nullable: true
+          items:
+            type: string
+          description: Optional ordered text color overrides (#RRGGBB) aligned by index with texts.
+    MAVideoError:
+      type: object
+      required:
+      - code
+      - message
+      description: Error payload that explains why generation failed, if applicable
+      properties:
+        code:
+          type: string
+          description: Error code
+          example: rate_limit_exceeded
+        message:
+          type: string
+          description: Error message
+          example: Rate limit exceeded. Please try again later.
+  responses:
+    ValidationError:
+      description: Validation Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/HTTPValidationError'
+  parameters:
+    XApiKey:
+      name: x-api-key
+      in: header
+      required: true
+      description: API Key for authentication
+      schema:
+        type: string
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: x-api-key
